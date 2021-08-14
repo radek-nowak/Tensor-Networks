@@ -22,5 +22,6 @@
 4. Are boundary conditions in the model finite or infinite?
 5. Are all the corner or edge tensors the same?
 6. When performing CTMRG with `sigma_z`, should `sigma_z` be considered in edge and corner tensors?
+7. How to perform partial trace on net T?
 
 
