@@ -1,5 +1,9 @@
 # Tensor-Networks
 
+### To do:
+- [ ] Implement tensorflow:
+ - [ ] contractions 
+
 ## 2D Ising Model
 
 ### To do:
