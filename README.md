@@ -2,7 +2,7 @@
 
 ### To do:
 - [ ] Implement tensorflow:
- - [ ] contractions 
+  - [ ] operations on tensors
 
 ## 2D Ising Model
 
