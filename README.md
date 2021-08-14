@@ -6,12 +6,12 @@
 
 - [ ] Define a function to generate Ising Model:
   - [ ] initialise network
-  - [ ] calculate partition function (perform partial trace on each site (T -> O))
+  - [ ] calculate partition function (perform partial trace on each site $\text{Tr}\left(\text{e}^{-\beta H}\right)$ (T -> O))
 - [ ] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm:
   - [ ] define corner tensors 
   - [ ] define edge tensors
 - [ ] Perform CTRMG:
-  - [ ] with sigma_z and without
+  - [ ] expectation value: $\frac{\text{Tr}\left(\text{e}^{-\beta H} \sigma_z\right)}{\text{Tr}\left(\text{e}^{-\beta H}\right)}$
 
 ### Questions:
 
@@ -21,5 +21,3 @@
 4. Are boundary conditions in the model finite or infinite?
 5. Are all the corner or edge tensors the same?
 6. When performing CTMRG with sigma_z, should sigma_z be considered in edge and corner tensors?
-
-
