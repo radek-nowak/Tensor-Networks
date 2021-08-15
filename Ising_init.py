@@ -20,7 +20,6 @@ class Hamiltonian:
         h = []
         for i in range(nbonds):
             bonds = -self.J*np.kron(sz,sz)# - self.g*np.kron(sx,one) - self.g*np.kron(one,sx)
-            h.append(np.reshape(bonds,[d,d,d,d]))
-            #h.append(bonds)
+            h.append(bonds.reshape(d,d,d,d))
         return h
     
