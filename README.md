@@ -11,8 +11,8 @@
   - [ ] calculate partition function (perform partial trace on each site)
  (T -> O))
 - [ ] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm:
-  - [ ] define corner tensors 
-  - [ ] define edge tensors
+  - [x] define corner tensors 
+  - [x] define edge tensors
 - [ ] Perform CTRMG:
   - [ ] calculate expectation value of `sigma_z`
 
