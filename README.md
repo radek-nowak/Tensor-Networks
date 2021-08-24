@@ -1,8 +1,6 @@
 # Tensor-Networks
 
 ### To do:
-- [ ] Implement tensorflow:
-  - [ ] operations on tensors
 
 ## 2D Ising Model
 
