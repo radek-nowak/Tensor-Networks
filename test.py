@@ -5,6 +5,15 @@ import matplotlib.pyplot as plt
 from Ising_init import Hamiltonian as H
 
 
+tc = lambda x: H(1,1).tensor_O(x,'corner')
+te = lambda x: H(1,1).tensor_O(x,'edge')
+to = lambda x: H(1,1).tensor_O(x,'o')
+
+tcz = lambda x: H(1,1).tensor_Z(x,'corner')
+tez = lambda x: H(1,1).tensor_Z(x,'edge')
+toz = lambda x: H(1,1).tensor_Z(x,'o')
+
+
 def sum_edge(beta,n,q):
     chi = 2
     if q == 'O':
