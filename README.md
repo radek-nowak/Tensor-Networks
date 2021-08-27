@@ -1,7 +1,7 @@
 # Tensor-Networks
 
 ### To do:
-
+- [ ] Normalisation!!!!
 ## 2D Ising Model
 
 ### To do:
