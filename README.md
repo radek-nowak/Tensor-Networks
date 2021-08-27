@@ -6,9 +6,9 @@
 
 ### To do:
 
-- [ ] Define a function to generate Ising Model:
-  - [ ] initialise network
-  - [ ] calculate partition function (perform partial trace on each site)
+- [x] Define a function to generate Ising Model:
+  - [x] initialise network
+  - [x] calculate partition function (perform partial trace on each site)
  (T -> O))
 - [ ] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm:
   - [x] define corner tensors 
