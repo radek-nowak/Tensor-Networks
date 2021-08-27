@@ -6,24 +6,17 @@
 
 ### To do:
 
-- [x] Define a function to generate Ising Model:
-  - [x] initialise network
-  - [x] calculate partition function (perform partial trace on each site)
- (T -> O))
-- [ ] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm:
-  - [x] define corner tensors 
-  - [x] define edge tensors
-- [ ] Perform CTRMG:
-  - [ ] calculate expectation value of `sigma_z`
+- [x] Define a function to generate Ising Model, define:
+  - [x] tensor L
+  - [x] tensor T
+  - [x] tensor O
+  - [x] tensor Z
+  - [x] edge tensor E
+  - [x] corner tensor C  
+- [x] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm
+- [ ] Generalize CTMRG for number of iterations > 1
+- [ ] Perform CTRMG for different number of interations:
 
-### Questions:
 
-1. What are the dimesnions of the network?
-2. What is the dimenion of chi?
-3. How to replace infinite parts of the network with finite elements (is it just an approximation?)?
-4. Are boundary conditions in the model finite or infinite?
-5. Are all the corner or edge tensors the same?
-6. When performing CTMRG with `sigma_z`, should `sigma_z` be considered in edge and corner tensors?
-7. How to perform partial trace on net T?
 
 
