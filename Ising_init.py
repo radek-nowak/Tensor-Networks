@@ -60,11 +60,13 @@ class Hamiltonian:
         index_order.insert(0,1)
         index_order.insert(len(T.shape),1)
         return ncon(T,index_order)
-        
 
-    def ising(self, beta):
-        n_sites = self.L
-        H = []
-        for i in range(n_sites):
-            H.append(self.tensor_O(beta))
-        return np.array(H)
+    def tensor_Z(self, beta, x):
+        T = self.tensor_T(beta, x)
+        sz = self.sigma_z
+        index_order = [-x for x in range(1,len(T.shape)-1)]
+        index_order.insert(0,2)
+        index_order.insert(len(T.shape),1)
+        return ncon([T,sz],[index_order,[1,2]])
+
+
