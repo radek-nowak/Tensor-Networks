@@ -65,3 +65,49 @@ def sum_corner(beta,n,q):
                 [sum_corner(beta,n-1,'Z'),sum_edge(beta,n-1,'Z'),sum_edge(beta,n-1,'Z'),z],
                 indices).reshape(chi**(n+1),chi**(n+1))
             return mn
+
+        
+        
+def ctmrg(beta,n, q):
+    chi = 2
+    if q == 'O':
+        c = sum_corner(beta,n,'O')
+        e = sum_edge(beta,n,'O')
+        o = to(beta)
+        
+        tensor_list1 = [e,c,e,c,e]
+        index_list1 = [[-1,-2,1],[1,2],[2,-5,3],[3,4],[-4,-3,4]]
+        t1 = ncon(tensor_list1,index_list1).reshape(4*chi**(2*n),chi**3)
+        
+        #tensor_list2 = [e,c,e,c,e]
+        #index_list2 = [[1,-2,-1],[2,1],[2,-3,3],[3,4],[4,-4,-5]]
+        #t2 = ncon(tensor_list2, index_list2).reshape(chi**3,4*chi**(2*n))
+        
+        tensor_list3 = [o,o]
+        index_list3 = [[-1,-2,-3,1],[-5,1,-6,-7]]
+        t3 = ncon(tensor_list3,index_list3).reshape(chi**3,chi**3)
+        
+        w1 = ncon([t1,t3,t1.transpose(1,0)],[[1,2],[2,3],[3,1]])
+        #trw1 = ncon(w1.reshape(4*chi**(2*n),4*chi**(2*n)),[1,1])
+        return w1#/trw1
+        #tensor_list = [t1,t3,t2]
+        #index_list = [[1,2,3,4,5],[2,3,4,6,7,8],[1,6,7,8,5]]
+        #return ncon(tensor_list,index_list)
+    else:
+        c = sum_corner(beta,n,'Z')
+        e = sum_edge(beta,n,'Z')
+        o = toz(beta)
+        
+        tensor_list1 = [e,c,e,c,e]
+        index_list1 = [[-1,-2,1],[1,2],[2,-5,3],[3,4],[-4,-3,4]]
+        t1 = ncon(tensor_list1,index_list1).reshape(4*chi**(2*n),chi**3)
+        
+        #tensor_list2 = [e,c,e,c,e]
+        #index_list2 = [[1,-2,-1],[2,1],[2,-3,3],[3,4],[4,-4,-5]]
+        #t2 = ncon(tensor_list2, index_list2).reshape(chi**3,4*chi**(2*n))
+        
+        tensor_list3 = [o,o]
+        index_list3 = [[-1,-2,-3,1],[-5,1,-6,-7]]
+        t3 = ncon(tensor_list3,index_list3).reshape(chi**3,chi**3)
+        
+        return ncon([t1,t3,t1.transpose(1,0)],[[1,2],[2,3],[3,1]])
