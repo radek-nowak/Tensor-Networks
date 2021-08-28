@@ -14,7 +14,7 @@
   - [x] edge tensor E
   - [x] corner tensor C  
 - [x] Write a CTMRG (Corner Transfer Matrix Renormalisation Group) algorithm
-- [ ] Generalize CTMRG for number of iterations > 1
+- [x] Generalize CTMRG for number of iterations > 1
 - [ ] Perform CTRMG for different number of interations:
 
 
