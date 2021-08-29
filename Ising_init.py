@@ -3,22 +3,16 @@ from ncon import ncon
 
 class Hamiltonian:
 
-    def __init__(self, L, J):
-        self.L = L
-        self.J = J
+    def __init__(self):
         self.sigma_z = np.array([[1.,0.],[0.,-1.]])
         self.one = np.eye(2)
-        #self.tensor_L    
-        #self.ising
 
-    # tensor L should have 3 indices
+
     def tensor_L(self, beta):
         sz, one = self.sigma_z, self.one
         return np.array([one*np.sqrt(np.cosh(beta)), sz*np.sqrt(np.sinh(beta))])
     
-    # needs testing
-    # Ls commute
-    # this is for corner tensor
+
     def tensor_T(self, beta, x):
         if x == 'edge':
             tensor_L = self.tensor_L(beta)
@@ -53,7 +47,7 @@ class Hamiltonian:
             T = ncon([L12,L34], index_order_2)
             return T
             
-        
+    
     def tensor_O(self, beta, x):
         T = self.tensor_T(beta, x)
         index_order = [-x for x in range(1,len(T.shape)-1)]
@@ -61,6 +55,7 @@ class Hamiltonian:
         index_order.insert(len(T.shape),1)
         return ncon(T,index_order)
 
+    
     def tensor_Z(self, beta, x):
         T = self.tensor_T(beta, x)
         sz = self.sigma_z
