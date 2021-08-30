@@ -1,6 +1,8 @@
 import numpy as np
 from ncon import ncon
-import matplotlib.pyplot as plt
+from numpy.linalg import svd
+from numpy import linalg as LA
+#from functools import lru_cache
 
 from Ising_init import Hamiltonian as H
 
@@ -13,6 +15,8 @@ tcz = lambda x: H().tensor_Z(x,'corner')
 tez = lambda x: H().tensor_Z(x,'edge')
 toz = lambda x: H().tensor_Z(x,'o')
 
+#@njit(nopython=True)
+#@lru_cache
 def sum_edge(beta,n,q):
     chi = 2
     eo = te(beta)
@@ -22,23 +26,29 @@ def sum_edge(beta,n,q):
     indices = [[-1,1,-2],[-3,-5,-4,1]]
     if q == 'O':
         m1 = ncon([eo,o],indices).reshape(chi**2,chi,chi**2)
-        frob_norm_m1 = np.sqrt(ncon([m1,np.conj(m1)],[[1,2,3],[3,2,1]]))
+        #frob_norm_m1 = np.sqrt(ncon([m1,m1],[[1,2,3],[3,2,1]]))
+        norm = LA.norm(m1)#abs(np.max(m1))
         if n == 1:
-            return m1/frob_norm_m1
+            return m1/norm#/frob_norm_m1
         while n>1:
             mn = ncon([sum_edge(beta,n-1,'O'),o],indices).reshape(chi**(n+1),chi,chi**(n+1))
-            frob_norm_mn = np.sqrt(ncon([mn,np.conj(mn)],[[1,2,3],[3,2,1]]))
-            return mn/frob_norm_mn
+            #frob_norm_mn = np.sqrt(ncon([mn,mn],[[1,2,3],[3,2,1]]))
+            norm = LA.norm(mn)#abs(np.max(mn))
+            return mn/norm#/frob_norm_mn
     else:
         m1 = ncon([ez,z],indices).reshape(chi**2,chi,chi**2)
-        frob_norm_m1 = np.sqrt(ncon([m1,np.conj(m1)],[[1,2,3],[3,2,1]]))
+        #frob_norm_m1 = np.sqrt(ncon([m1,m1],[[1,2,3],[3,2,1]]))
+        norm = LA.norm(m1)#abs(np.max(m1))
         if n == 1:
-            return m1/frob_norm_m1
+            return m1/norm#/frob_norm_m1
         while n>1:
             mn = ncon([sum_edge(beta,n-1,'Z'),z],indices).reshape(chi**(n+1),chi,chi**(n+1))
-            frob_norm_mn = np.sqrt(ncon([mn,np.conj(mn)],[[1,2,3],[3,2,1]]))
-            print(mn) 
-    
+            #frob_norm_mn = np.sqrt(ncon([mn,mn],[[1,2,3],[3,2,1]]))
+            norm = LA.norm(mn)#abs(np.max(mn))
+            return mn/norm#/frob_norm_mn
+
+#@njit(nopython=True) 
+#@lru_cache
 def sum_corner(beta,n,q):
     chi = 2
     co = tc(beta)
@@ -50,28 +60,31 @@ def sum_corner(beta,n,q):
     indices = [[1,2],[-1,3,1],[2,4,-4],[3,-2,-3,4]]
     if q == 'O':
         m1 = ncon([co,eo,eo,o],indices).reshape(chi**2,chi**2)
-        frob_norm_m1 = np.sqrt(ncon([m1,np.conj(m1)],[[1,2],[2,1]]))
+        #frob_norm_m1 = np.sqrt(ncon([m1,m1],[[1,2],[2,1]]))
+        norm = LA.norm(m1)#abs(np.max(m1))
         if n == 1:
-            return m1/frob_norm_m1      
+            return m1/norm     
         while n>1:
             mn = ncon(
                 [sum_corner(beta,n-1,'O'),sum_edge(beta,n-1,'O'),sum_edge(beta,n-1,'O'),o],
                 indices).reshape(chi**(n+1),chi**(n+1))
-            frob_norm_mn = np.sqrt(ncon([mn,np.conj(mn)],[[1,2],[2,1]]))
-            return mn/frob_norm_mn
+            #frob_norm_mn = np.sqrt(ncon([mn,mn],[[1,2],[2,1]]))
+            norm = LA.norm(mn)#abs(np.max(mn))
+            return mn/norm
     else:
         m1 = ncon([cz,ez,ez,z],indices).reshape(chi**2,chi**2)
-        frob_norm_m1 = np.sqrt(ncon([m1,m1],[[1,2],[2,1]]))
+        #frob_norm_m1 = np.sqrt(ncon([m1,m1],[[1,2],[2,1]]))
+        norm = LA.norm(m1)#abs(np.max(m1)) 
         if n == 1:
-            return m1/frob_norm_m1      
+            return m1/norm#/frob_norm_m1      
         while n>1:
             mn = ncon(
                 [sum_corner(beta,n-1,'Z'),sum_edge(beta,n-1,'Z'),sum_edge(beta,n-1,'Z'),z],
                 indices).reshape(chi**(n+1),chi**(n+1))
-            frob_norm_mn = np.sqrt(ncon([mn,np.conj(mn)],[[1,2],[2,1]]))
-            return mn/frob_norm_mn
-
-
+            #frob_norm_m1frob_norm_mn = np.sqrt(ncon([mn,mn],[[1,2],[2,1]]))
+            norm = LA.norm(mn)#abs(np.max(mn))
+            return mn/norm#/frob_norm_mn
+#@lru_cache
 def ctmrg(beta,n, q):
     chi = 2
     if q == 'O':
@@ -115,3 +128,27 @@ def ctmrg(beta,n, q):
         t3 = ncon(tensor_list3,index_list3).reshape(chi**3,chi**3)
         
         return ncon([t1,t3,t1.transpose(1,0)],[[1,2],[2,3],[3,1]])
+
+def new_function(beta,n):
+    P1, C_prime, P2 = svd(sum_corner(beta,n,'O'),full_matrices=False)
+    P1_matrix = P1.reshape(2,2**n,2**(n+1))
+    C_diag = np.diag(C_prime)
+    P2_matrix = P2.reshape(2**(n+1),2**n,2)
+    tensor_list = [P1_matrix, C_diag, P2_matrix]
+    index_list = [[-1,-2,1],[1,2],[2,-3,-4]]
+    return ncon(tensor_list,index_list).reshape(2**(n+1),2**(n+1))
+    #return P1_matrix, C_diag, P2_matrix
+
+
+def new_function2(beta,n):
+    P1, C_prime, P2 = svd(sum_corner(beta,n,'O'),full_matrices=False)
+    chi = int(len(C_prime))
+    new_chi = int(len(C_prime)/2)
+    P1_matrix = P1[0:new_chi,0:new_chi]
+    C_diag = np.diag(C_prime[0:new_chi])
+    P2_matrix = P2[0:new_chi,0:new_chi]
+    tensor_list = [P1_matrix, C_diag, P2_matrix]
+    index_list = [[-1,1],[1,2],[2,-4]]
+    return ncon(tensor_list,index_list)
+    #return P1_matrix, C_diag, P2_matrix
+    #return new_chi
