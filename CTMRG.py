@@ -129,24 +129,15 @@ def ctmrg(beta,n, q):
         
         return ncon([t1,t3,t1.transpose(1,0)],[[1,2],[2,3],[3,1]])
 
-def new_function(beta,n):
-    P1, C_prime, P2 = svd(sum_corner(beta,n,'O'),full_matrices=False)
-    P1_matrix = P1.reshape(2,2**n,2**(n+1))
-    C_diag = np.diag(C_prime)
-    P2_matrix = P2.reshape(2**(n+1),2**n,2)
-    tensor_list = [P1_matrix, C_diag, P2_matrix]
-    index_list = [[-1,-2,1],[1,2],[2,-3,-4]]
-    return ncon(tensor_list,index_list).reshape(2**(n+1),2**(n+1))
-    #return P1_matrix, C_diag, P2_matrix
 
 
 def new_function2(beta,n):
     P1, C_prime, P2 = svd(sum_corner(beta,n,'O'),full_matrices=False)
     chi = int(len(C_prime))
     new_chi = int(len(C_prime)/2)
-    P1_matrix = P1[0:new_chi,0:new_chi]
+    P1_matrix = P1[0:chi,0:new_chi]
     C_diag = np.diag(C_prime[0:new_chi])
-    P2_matrix = P2[0:new_chi,0:new_chi]
+    P2_matrix = P2[0:new_chi,0:chi]
     tensor_list = [P1_matrix, C_diag, P2_matrix]
     index_list = [[-1,1],[1,2],[2,-4]]
     return ncon(tensor_list,index_list)
